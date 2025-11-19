@@ -21,12 +21,30 @@ provider "aws" {
   }
 }
 
-# Aquí van tus recursos de infraestructura
-# Ejemplo:
-# resource "aws_vpc" "main" {
-#   cidr_block = var.vpc_cidr
-#
-#   tags = {
-#     Name = "${var.project_name}-vpc"
-#   }
-# }
+#Buscar VPC Existente con Data Source
+data "aws_vpc" "existing" {
+  tags = {
+    Name = var.vpc_name
+  }
+} 
+
+#Crear public subnet, usamos resource para crear contenido nuevo
+resource "aws_subnet" "public" {
+  #Asociar vpc con subnet
+  vpc_id = data.aws_vpc.existing.id
+
+  #Rango de CIDR
+  cidr_block = var.public_subnet_cidr
+
+  #Zona de disponibilidad
+  availability_zone = var.availability_zone
+
+  #IP publica automaticamente (Buena practica para subnet publicas (Segun claude xD))
+  map_public_ip_on_launch = true
+
+  #Tags para identificar la subnet en la consola
+  tags = {
+    Name = var.public_subnet_name
+  }
+}
+

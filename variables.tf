@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "environment" {
   description = "Ambiente de despliegue (dev, staging, prod)"
   type        = string
-  default     = "dev"
+  default     = "prod"
 }
 
 variable "project_name" {
@@ -16,15 +16,28 @@ variable "project_name" {
   default     = "lab-vpc"
 }
 
-# Ejemplo de variables adicionales para VPC
-# variable "vpc_cidr" {
-#   description = "CIDR block para la VPC"
-#   type        = string
-#   default     = "10.0.0.0/16"
-# }
+#VPC EXISTENTE
+variable "vpc_name" {
+  description = "VPC que ya existia donde crearemos todos los recursos"
+  type = string
+  default = "Lab VPC"
+}
 
-# variable "availability_zones" {
-#   description = "Lista de zonas de disponibilidad"
-#   type        = list(string)
-#   default     = ["us-east-1a", "us-east-1b"]
-# }
+#Public subnet
+variable "public_subnet_cidr" {
+  description = "CIDR block para la subnet"
+  type = string
+  default = "10.0.0.0/24"
+}
+
+variable "availability_zone" {
+  description = "Zona de disponibilidad para la subnet publica"
+  type = string
+  default = "us-east-1a"
+}
+
+variable "public_subnet_name" {
+  description = "Nombre de la subnet publica"
+  type = string
+  default = "Public Subnet"
+}
