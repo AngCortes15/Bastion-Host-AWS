@@ -41,3 +41,10 @@ variable "public_subnet_name" {
   type = string
   default = "Public Subnet"
 }
+
+#Internet Gateway
+variable "igw-name" {
+  description = "Nombre del igw"
+  type = string
+  default = "bation-lab"
+}

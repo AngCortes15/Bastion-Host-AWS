@@ -28,3 +28,29 @@ output "aws_region" {
   description = "Region de AWS que se esta usando"
   value = var.aws_region
 }
+
+#Internet Gateway
+output "igw_name" {
+  description = "Nombre del igw"
+  value = aws_internet_gateway.main.tags.Name
+}
+
+output "igw_id" {
+  description = "ID del igw"
+  value = aws_internet_gateway.main.id
+}
+
+output "igw_arn" {
+  description = "arn del igw"
+  value = aws_internet_gateway.main.arn
+}
+
+output "existing_route_table_id" {
+  description = "Id de lo route table asociado a Lab VPC"
+  value = data.aws_route_table.existing.id
+}
+
+output "internet_route_id" {
+  description = "Id de la ruta creada hacia internet"
+  value = aws_route.internet_access.id
+}

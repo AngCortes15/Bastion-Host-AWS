@@ -48,3 +48,22 @@ resource "aws_subnet" "public" {
   }
 }
 
+# Internet Gateway
+resource "aws_internet_gateway" "main" {
+  vpc_id = data.aws_vpc.existing.id
+  tags = {
+    Name = "${var.igw-name}-igw"
+  }
+}
+
+#Route table de Lab VPC
+data "aws_route_table" "existing" { #encontrar la route table de nuestra VPC
+  vpc_id = data.aws_vpc.existing.id
+}
+
+resource "aws_route" "internet_access" { #Agregar nueva ruta al route table
+  route_table_id = data.aws_route_table.existing.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = aws_internet_gateway.main.id #Target: El Internet Gateway que creamos anteriormente
+}
+
