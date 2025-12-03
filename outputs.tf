@@ -54,3 +54,26 @@ output "internet_route_id" {
   description = "Id de la ruta creada hacia internet"
   value = aws_route.internet_access.id
 }
+
+#bastion host instance y sg
+output "bastion_instance_id" {
+  description = "ID de la instancia EC2 del bastion"
+  value = aws_instance.bastion.id
+}
+
+output "bastion_public_id" {
+  description = "IP publica del Bastion"
+  value = aws_instance.bastion.public_ip
+}
+output "bastion_public_dns" {
+  description = "DNS publico del bastion host"
+  value = aws_instance.bastion.public_dns
+}
+output "bastion_sg_id" {
+  description = "ID del SG del bastion"
+  value = data.aws_security_group.bastion.id
+}
+output "my_current_ip" {
+  description = "Mi ip publica actual"
+  value = "${chomp(trimspace(data.http.my_ip.response_body))}/32"
+}
