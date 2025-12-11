@@ -48,3 +48,15 @@ variable "igw-name" {
   type = string
   default = "bation-lab"
 }
+
+variable "private_subnet_cidr" {
+  description = "CIDR de la subnet privada"
+  type = string
+  default = "10.0.1.0/24"
+}
+
+variable "private_subnet_name" {
+  description = "Nombre de la subnet privada"
+  type = string
+  default = "Private Subnet"
+}

@@ -77,3 +77,19 @@ output "my_current_ip" {
   description = "Mi ip publica actual"
   value = "${chomp(trimspace(data.http.my_ip.response_body))}/32"
 }
+
+#Private Subnet
+output "private_subnet_id" {
+  description = "Id de la subnet privada"
+  value = aws_subnet.private.id
+}
+
+output "private_subnet_cidr" {
+  description = "CIDR block de la private subnet"
+  value = aws_subnet.private.cidr_block
+}
+
+output "private_subnet_az" {
+  description = "az de la subnet privada"
+  value = aws_subnet.private.availability_zone
+}
