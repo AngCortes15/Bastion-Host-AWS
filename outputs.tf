@@ -93,3 +93,24 @@ output "private_subnet_az" {
   description = "az de la subnet privada"
   value = aws_subnet.private.availability_zone
 }
+
+#NAT Gateway
+output "nat_gateway_id" {
+  description = "ID del NAT_G"
+  value = aws_nat_gateway.main.id
+}
+
+output "nat_gateway_public_ip" {
+  description = "Elastic IP publica del NAT Gateway"
+  value = aws_eip.nat.public_ip
+}
+
+output "private_route_table_id" {
+  description = "ID de la Private Route Table"
+  value = aws_route_table.private.id
+}
+
+output "nat_gateway_subnet" {
+  description = "Subnet donde esta el NAT Gateway"
+  value = aws_nat_gateway.main.subnet_id
+}

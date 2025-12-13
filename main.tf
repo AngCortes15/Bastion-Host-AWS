@@ -142,7 +142,7 @@ data "aws_key_pair" "vockey" {
 
 data "aws_security_group" "bastion" {
   vpc_id = data.aws_vpc.existing.id
-  name = "Bastion-Host-SG"
+  name = "Bastion Host SG"
 }
 
 #Cracion de la Instancia EC2 para el Bastion
@@ -166,4 +166,40 @@ resource "aws_subnet" "private" {
   tags = {
     Name = var.private_subnet_name
   }
+}
+
+#NAT Gateway
+resource "aws_eip" "nat" { #Elastic IP para el NAT Gateway
+  domain = "vpc" #Indica que esta EIP es para usar dentro de una VPC
+  tags = {
+    Name = "Lab NAT Gateway EIP"
+  }
+  depends_on = [ aws_internet_gateway.main ]
+}
+ 
+ resource "aws_nat_gateway" "main" { #Creacion del NAT Gateway
+   allocation_id = aws_eip.nat.id
+   subnet_id = aws_subnet.public.id
+   tags = {
+     Name = "Lab NAT Gateway"
+   }
+   depends_on = [ aws_internet_gateway.main ]
+ }
+
+ resource "aws_route_table" "private" { #Private Route Table
+   vpc_id = data.aws_vpc.existing.id
+   tags = {
+     Name = "Private Route Table"
+   }
+ }
+
+ resource "aws_route" "private_nat_gateway" { #Ruta hacia NAT Gateway
+   route_table_id = aws_route_table.private.id
+   destination_cidr_block = "0.0.0.0/0"
+   nat_gateway_id = aws_nat_gateway.main.id
+ }
+
+resource "aws_route_table_association" "private" {
+  subnet_id = aws_subnet.private.id
+  route_table_id = aws_route_table.private.id
 }
