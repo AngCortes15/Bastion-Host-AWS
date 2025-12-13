@@ -59,6 +59,10 @@ resource "aws_internet_gateway" "main" {
 #Route table de Lab VPC
 data "aws_route_table" "existing" { #encontrar la route table de nuestra VPC
   vpc_id = data.aws_vpc.existing.id
+  filter {
+    name = "association.main"
+    values = ["true"]
+  }
 }
 
 resource "aws_route" "internet_access" { #Agregar nueva ruta al route table
@@ -202,4 +206,26 @@ resource "aws_eip" "nat" { #Elastic IP para el NAT Gateway
 resource "aws_route_table_association" "private" {
   subnet_id = aws_subnet.private.id
   route_table_id = aws_route_table.private.id
+}
+
+#Instancia EC2 en la private subnet
+data "aws_key_pair" "vockey2" { # Data source: Key Pair vockey2 (creado manualmente)
+  key_name = "vockey2"
+}
+
+data "aws_security_group" "private_instance" { #Security Group de la Private Instance (creado manualmente)
+  vpc_id = data.aws_vpc.existing.id
+  name = "Private Instance SG"
+}
+
+resource "aws_instance" "private" {
+  ami = data.aws_ami.amazon_linux_2023.id
+  instance_type = "t2.micro"
+  key_name = data.aws_key_pair.vockey2.key_name
+  subnet_id = aws_subnet.private.id
+  vpc_security_group_ids = [ data.aws_security_group.private_instance.id ]
+  associate_public_ip_address = false
+  tags = {
+    Name = "Private Instance"
+  }
 }

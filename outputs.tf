@@ -114,3 +114,14 @@ output "nat_gateway_subnet" {
   description = "Subnet donde esta el NAT Gateway"
   value = aws_nat_gateway.main.subnet_id
 }
+
+#Private Instance
+output "private_instance_id" {
+  description = "Id de las intancia privada"
+  value = aws_instance.private.id
+}
+
+output "private_instance_private_ip" {
+  description = "IP privada de la instancia privada"
+  value = aws_instance.private.private_ip
+}
